@@ -1,10 +1,3 @@
-function Enemy_Template (Img: Image, Speed: number, Special: number, Cooldown: number, HP: number) {
-    enemy_image.push(Img)
-    enemy_speed.push(Speed)
-    enemy_special.push(Special)
-    enemy_cooldown.push(Cooldown)
-    enemy_hp.push(HP)
-}
 // TIE ENEMIES SPAWN TO SCORE
 // by limiteing the number picker based on score
 // at score 5 update it to allow more 
@@ -30,6 +23,15 @@ sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Enemy, function (sprite, otherSpr
         otherSprite.y += 4
     }
 })
+// This creates the parallel arrays
+function Enemy_Templates (Img: Image, Speed: number, Special: number, Cooldown: number, HP: number) {
+    enemy_image.push(Img)
+    enemy_speed.push(Speed)
+    enemy_special.push(Special)
+    enemy_cooldown.push(Cooldown)
+    enemy_hp.push(HP);
+    [0].push(0)
+}
 function Water_Gun_attack () {
     Water_Gun = sprites.create(img`
         . . . . . . . . . . . . . . . . 
@@ -62,56 +64,63 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, oth
         info.changeScoreBy(1)
     }
 })
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
+    sprites.destroy(otherSprite)
+    info.changeLifeBy(-1)
+})
 let Closest_Enemy: Sprite[] = []
 let Water_Gun: Sprite = null
-let enemy_pokemon: Sprite = null
-let Random_enemy_chooser = 0
 let enemy_hp: number[] = []
 let enemy_cooldown: number[] = []
 let enemy_special: number[] = []
 let enemy_speed: number[] = []
+let enemy_pokemon: Sprite = null
 let enemy_image: Image[] = []
+let Random_enemy_chooser = 0
 let Squirtle: Sprite = null
 tiles.setCurrentTilemap(tilemap`level1`)
 Squirtle = sprites.create(assets.image`squirtle art`, SpriteKind.Player)
 scene.cameraFollowSprite(Squirtle)
 controller.moveSprite(Squirtle)
-Enemy_Template(img`
-    2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
-    2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
-    2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
-    2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
-    2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
-    2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
-    2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
-    2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
-    2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
-    2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
-    2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
-    2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
-    2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
-    2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
-    2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
-    2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 
+Enemy_Templates(img`
+    . . . . e e e e . . . . . . . . . . 
+    . . . e 4 4 4 4 e . . . . . . 2 . . 
+    . . e 4 4 4 4 4 4 e . . . . . 2 . . 
+    . . e 4 4 4 4 4 4 e . . . . . 2 2 . 
+    . e 4 e 4 4 4 4 4 4 e . . . 2 2 2 . 
+    . e 4 e 1 4 4 4 4 4 e . . . 2 d 2 2 
+    e 4 4 4 c 4 4 4 4 4 e . . . 2 d d 2 
+    f 4 4 4 c 4 4 4 4 4 4 e . . . 2 d e 
+    . f e 4 4 4 e e 4 4 4 e . . . e e f 
+    . . e f f e e 4 e 4 4 4 e e e e e f 
+    . . . . e e 4 4 e 4 4 4 4 4 e e f . 
+    . . . . f f f f 4 4 4 4 e e e e f . 
+    . . . . . e 4 e 4 4 e e e e f f . . 
+    . . . . . e e e e e e e f f . . . . 
+    . . . . . . e e e f e . . . . . . . 
+    . . . . . . f f f . . . . . . . . . 
     `, 45, 0, 0, 1)
-Enemy_Template(img`
-    5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 
-    5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 
-    5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 
-    5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 
-    5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 
-    5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 
-    5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 
-    5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 
-    5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 
-    5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 
-    5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 
-    5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 
-    5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 
-    5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 
-    5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 
-    5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 
+Enemy_Templates(img`
+    . . . . . . . . . f f f f . . . . 
+    . . . . . . . f f c c c f . . . . 
+    . . . . . . f 5 e c c f . . . . . 
+    . . . . c f 5 5 5 f f f f f . . . 
+    . . e e 5 5 5 f f 5 e c c f . . . 
+    . e 5 5 5 5 e 5 5 5 5 c f . . . . 
+    e 5 5 5 5 5 5 5 5 5 f f . . . . . 
+    e 5 5 5 5 5 5 5 e f c . . c c c f 
+    c 5 5 1 5 5 5 5 5 5 e c . c 5 5 f 
+    c 4 5 f 5 5 5 5 5 e e 4 c 5 5 5 f 
+    . c 4 5 2 2 5 5 5 5 5 e c 5 5 5 f 
+    . . f f 2 2 5 5 5 5 e e c 5 f c . 
+    . . . . f f e 5 5 5 5 5 c e f . . 
+    . . . . e e 5 5 5 5 5 5 e f f . . 
+    . . . . . e e 5 5 5 5 c e f . . . 
+    . . . . . f 5 5 e f e e f . . . . 
+    . . . . . . f f e . . . . . . . . 
     `, 55, 1, 5, 2)
+info.setLife(3)
+info.setScore(0)
 game.onUpdateInterval(1000, function () {
     Spawn_Enemy()
 })
