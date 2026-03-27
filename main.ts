@@ -5,6 +5,10 @@ function Enemy_Template (Img: Image, Speed: number, Special: number, Cooldown: n
     enemy_cooldown.push(Cooldown)
     enemy_hp.push(HP)
 }
+// TIE ENEMIES SPAWN TO SCORE
+// by limiteing the number picker based on score
+// at score 5 update it to allow more 
+// at score 10 update it also
 function Spawn_Enemy () {
     Random_enemy_chooser = randint(0, enemy_image.length - 1)
     enemy_pokemon = sprites.create(enemy_image[Random_enemy_chooser], SpriteKind.Enemy)
@@ -15,9 +19,6 @@ function Spawn_Enemy () {
     sprites.setDataNumber(enemy_pokemon, "HP", enemy_hp[Random_enemy_chooser])
     sprites.setDataNumber(enemy_pokemon, "NextShot", game.runtime() + enemy_cooldown[Random_enemy_chooser])
 }
-controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    Spawn_Enemy()
-})
 // Makes sure enempies not overlap eachother
 sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Enemy, function (sprite, otherSprite) {
     if (sprite.x < otherSprite.x) {
@@ -58,6 +59,7 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, oth
     sprites.changeDataNumberBy(otherSprite, "HP", -1)
     if (sprites.readDataNumber(otherSprite, "HP") == 0) {
         sprites.destroy(otherSprite, effects.fountain, 1000)
+        info.changeScoreBy(1)
     }
 })
 let Closest_Enemy: Sprite[] = []
@@ -110,6 +112,9 @@ Enemy_Template(img`
     5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 
     5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 
     `, 55, 1, 5, 2)
+game.onUpdateInterval(1000, function () {
+    Spawn_Enemy()
+})
 game.onUpdateInterval(500, function () {
     Closest_Enemy = spriteutils.getSpritesWithin(SpriteKind.Enemy, 75, Squirtle)
     Water_Gun_attack()
