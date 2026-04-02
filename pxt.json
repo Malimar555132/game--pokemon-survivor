@@ -7,7 +7,9 @@
         "arcade-sprite-util": "github:jwunderl/arcade-sprite-util#v0.6.0",
         "arcade-sprite-data": "github:microsoft/arcade-sprite-data#v0.2.1",
         "pxt-status-bar": "github:jwunderl/pxt-status-bar#v0.4.2",
-        "Achievements": "github:meeeeeeeep1/achievements#4910ba22f82f73691752a6af29ed23215662723a"
+        "Achievements": "github:meeeeeeeep1/achievements#4910ba22f82f73691752a6af29ed23215662723a",
+        "arcade-text": "github:microsoft/arcade-text#v1.3.0",
+        "damage-indicators": "github:AidanTilanus/damage-indicators#79b6198d54b311162cf991b23d5043e4197b287c"
     },
     "files": [
         "main.blocks",
